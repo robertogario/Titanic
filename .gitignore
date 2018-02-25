@@ -1,0 +1,4 @@
+# Ignore Images folder and contents
+img/
+# Ignore pycache folder and contents
+__pycache__/
