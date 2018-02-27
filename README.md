@@ -1,6 +1,4 @@
-#H1 README
-
-#H2. Purpose
+#README
 
 Testing machine learning on Kaggle's Titanic dataset, to predict who survived the Titanic disaster based on data about them such as age, class of travel, gender, etc.
 
