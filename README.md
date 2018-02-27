@@ -7,3 +7,5 @@ So far I have achieved the following results (on a split test set):
 * LinearSVC: 78%
 * K Nearest Neighbour: 81%
 * Random Forest: 79%
+
+These are the % correct predictions when the trained model is applied to the test set.
