@@ -18,6 +18,7 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from titanic_utils import DataFrameSelector
 from sklearn.pipeline import FeatureUnion
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import LinearSVC
 
 def print_section(text):
@@ -85,7 +86,8 @@ print_section("Split data, train and test model")
 X_train, X_test, y_train, y_test = \
         train_test_split(titanic_prepared, titanic_labels, test_size=.3, random_state=42)
         
-clf = LinearSVC(random_state=0)
+#clf = LinearSVC(random_state=0)
+clf = KNeighborsClassifier(n_neighbors=3)
 clf.fit(X_train, y_train)
 
 score = clf.score(X_test, y_test)
