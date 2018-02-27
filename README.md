@@ -4,6 +4,6 @@ Testing machine learning on Kaggle's Titanic dataset, to predict who survived th
 
 So far I have achieved the following results (on a split test set):
 
-LinearSVC: 78%
-K Nearest Neighbour: 81%
-Random Forest: 79%
+* LinearSVC: 78%
+* K Nearest Neighbour: 81%
+* Random Forest: 79%
