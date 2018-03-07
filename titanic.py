@@ -18,8 +18,11 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from titanic_utils import DataFrameSelector
 from sklearn.pipeline import FeatureUnion
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import LinearSVC
+
+import matplotlib.pyplot as plt
+from sklearn.decomposition import TruncatedSVD
 
 def print_section(text):
     print("\n")
@@ -28,29 +31,28 @@ def print_section(text):
     print("----------------------------------------")
 
 print_section("Loading Data")
-orig_data = pd.read_csv(r"C:\Source\Py_Projects\Titanic\data\train.csv")
+orig_data = pd.read_csv(r"data\train.csv")
 
-print(df.head())
-print(df.describe())
-print(df.corr())
+print(orig_data.dtypes)
 
 print_section("Dropping unnecessary columns")
 # make a copy without columns that aren't useful for ML
 df = orig_data.drop("Name", axis=1).drop("Cabin", axis=1).drop("PassengerId", axis=1)
+#query('Sex == "female"').query('Pclass == "3"')
+
+#df['Family'] = df.apply(lambda row: row.Parch + row.SibSp, axis = 1)
 
 print_section("Splitting data and labels")
 titanic_data = df
 # Copy labels. They will be removed from the original set during the pipeline.
 titanic_labels = df["Survived"].copy()
 
+titanic_data.corr()
+
 print_section("Data cleansing pipeline")
-# The line below can be used to check the learning. If it is uncommented
-# in place of the other num_attribs row, it should result in a score of
-# 100% for the model.
-#num_attribs = ["Pclass", "Age", "SibSp", "Parch", "Fare", "Survived"]
 
 # Pipeline to process data begins here.
-num_attribs = ["Pclass", "Age", "SibSp", "Parch", "Fare"]
+num_attribs = ["Pclass", "Age", "Fare"]
 cat_attribs = ["Sex"]
 total_attribs = num_attribs + cat_attribs
 
@@ -79,7 +81,9 @@ tit_prep_pd = pd.DataFrame(data=titanic_prepared, columns=total_attribs)
 tit_prep_pd_labelled = tit_prep_pd.assign(Survived=titanic_labels.values)
 # Correlation of the prepared data allows us to check correlation of numerics
 print(tit_prep_pd_labelled.corr())
-sns.pairplot(tit_prep_pd_labelled[num_attribs + list(["Survived"])], hue="Survived", size = 2.5)
+sns.pairplot(tit_prep_pd_labelled[total_attribs + list(["Survived"])], hue="Survived", size = 2.5)
+
+#titanic_data.query('Sex == "male"').hist(column="SibSp", by="Survived")
 
 # Split training and testing data and labels in the usual way.
 print_section("Split data, train and test model")
@@ -87,10 +91,16 @@ X_train, X_test, y_train, y_test = \
         train_test_split(titanic_prepared, titanic_labels, test_size=.3, random_state=42)
         
 #clf = LinearSVC(random_state=0)
-clf = KNeighborsClassifier(n_neighbors=3)
+clf = KNeighborsClassifier(n_neighbors=5)
 clf.fit(X_train, y_train)
 
 score = clf.score(X_test, y_test)
 print("Test Accuracy: {0:.2f}%".format(score * 100.0))
+
+svd = TruncatedSVD(n_components = 3)
+X_3d = svd.fit_transform(X_train)
+fig = plt.figure()
+ax = Axes3D(fig)
+ax.scatter(X_3d[:,0], X_3d[:,1], X_3d[:,2], c=y_train, s=50, cmap = plt.cm.Paired)
 
 #predictions = clf.predict(<test data>)
