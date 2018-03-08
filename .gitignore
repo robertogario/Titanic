@@ -2,3 +2,5 @@
 img/
 # Ignore pycache folder and contents
 __pycache__/
+# Ignore ipynb checkpoints
+.ipynb_checkpoints/
