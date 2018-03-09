@@ -2,10 +2,8 @@
 
 Testing machine learning on Kaggle's Titanic dataset, to predict who survived the Titanic disaster based on data about them such as age, class of travel, gender, etc.
 
-So far I have achieved the following results (on a split test set):
+So far the best result is around 77% on Kaggle.
 
-* LinearSVC: 78%
-* K Nearest Neighbour: 81%
-* Random Forest: 79%
+To take this further, exploring relationships between survival rates of family members (using common surnames) would be an option.
 
-These are the % correct predictions when the trained model is applied to the test set.
+See the file titanic_nb.ipynb for the full Jupyter notebook.
